@@ -94,7 +94,7 @@ public class AppleGreenColorPredicate implements ApplePredicate {
 }
 ```
 
-![Untitled](/Users/kjh/Desktop/git/modern-java-in-action-study/Chapter02_동작_파라미터화_코드_전달하기/img01.png)
+![Untitled](./img/img01.png)
 
 각 알고리즘 (=전략=AppleHeavyWeightPredicate)을 캡슐화하는 알고리즘 패밀리 (=ApplePredicate)를 정의해두고 런타임에서 알고리즘을 선택하는 기법 → 동작 파라미터화
 
@@ -159,7 +159,7 @@ List<Apple> result =
     filterApples(inventory, (Apple apple) -> RED.equals(a.getColor());
 ```
 
-![Untitled](/Users/kjh/Desktop/git/modern-java-in-action-study/Chapter02_동작_파라미터화_코드_전달하기/img02.png)
+![Untitled](./img/img02.png)
 
 ## 2.3.3 일곱 번째 시도 : 리스트 형식으로 추상화
 
