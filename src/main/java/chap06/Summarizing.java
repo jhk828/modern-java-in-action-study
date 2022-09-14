@@ -19,6 +19,25 @@ public class Summarizing {
         System.out.println("Short menu comma separated: " + getShortMenuCommaSeparated());
     }
 
+    private void quiz() {
+        String shortMenu1 = menu.stream().map(Dish::getName).collect(joining(", "));
+
+        String shortMenu2 = menu.stream()
+                .map(Dish::getName)
+                .collect(reducing((s1,s2) -> s1+s2))
+                .get();
+
+        // reduce는 두 인수를 받아 같은 형식을 반환하는 함수를 반환
+//        String shortMenu3 = menu.stream()// Stream<Dish>
+//                .collect(reducing((d1,d2) -> d1.getName() + d2.getName())) // Optional<Dish>
+//                .get()
+
+        // 빈 문자열을 포함하는 누적자로 리듀싱
+        // - Stream Dish를 방문하면서 Dish를 요리명으로 변환한 후 누적자로 추가
+        String shortMenu4 = menu.stream()
+                .collect(reducing("", Dish::getName, (s1, s2) -> s1 + s2));
+    }
+
     private static long howManyDishes() {
         return menu.stream().collect(counting());
     }

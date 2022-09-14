@@ -1,16 +1,14 @@
 package chap06;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static chap06.Dish.dishTags;
 import static chap06.Dish.menu;
+import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.*;
 
 public class Grouping {
-
+    // 6.3 그룹화
   enum CaloricLevel { DIET, NORMAL, FAT };
 
   public static void main(String ... args) {
@@ -45,7 +43,9 @@ public class Grouping {
   }
 
   private static Map<Dish.Type, List<Dish>> groupCaloricDishesByType() {
-    //return menu.stream().filter(dish -> dish.getCalories() > 500).collect(groupingBy(Dish::getType));
+      // FISH 키가 사라짐
+//    return  menu.stream().filter(dish->dish.getCalories()>500)
+//              .collect(groupingBy(Dish::getType));
     return menu.stream().collect(
         groupingBy(Dish::getType,
             filtering(dish -> dish.getCalories() > 500, toList())));
@@ -71,15 +71,9 @@ public class Grouping {
     return menu.stream().collect(
         groupingBy(Dish::getType, // 첫 번째 수준의 분류 함수
             groupingBy((Dish dish) -> { // 두 번째 수준의 분류 함수
-              if (dish.getCalories() <= 400) {
-                return CaloricLevel.DIET;
-              }
-              else if (dish.getCalories() <= 700) {
-                return CaloricLevel.NORMAL;
-              }
-              else {
-                return CaloricLevel.FAT;
-              }
+              if (dish.getCalories() <= 400) { return CaloricLevel.DIET;}
+              else if (dish.getCalories() <= 700) {return CaloricLevel.NORMAL;}
+              else {return CaloricLevel.FAT;}
             })
         )
     );
@@ -96,6 +90,10 @@ public class Grouping {
   }
 
   private static Map<Dish.Type, Dish> mostCaloricDishesByTypeWithoutOprionals() {
+      Map<Dish.Type, Optional<Dish>> mostCaloricByType = menu.stream()
+          .collect(groupingBy(Dish::getType,
+            maxBy(comparingInt(Dish::getCalories))));
+
     return menu.stream().collect(
         groupingBy(Dish::getType,
             collectingAndThen(
@@ -112,15 +110,9 @@ public class Grouping {
     return menu.stream().collect(
         groupingBy(Dish::getType, mapping(
             dish -> {
-              if (dish.getCalories() <= 400) {
-                return CaloricLevel.DIET;
-              }
-              else if (dish.getCalories() <= 700) {
-                return CaloricLevel.NORMAL;
-              }
-              else {
-                return CaloricLevel.FAT;
-              }
+              if (dish.getCalories() <= 400) {  return CaloricLevel.DIET; }
+              else if (dish.getCalories() <= 700) { return CaloricLevel.NORMAL; }
+              else { return CaloricLevel.FAT; }
             },
             toSet()
         ))
